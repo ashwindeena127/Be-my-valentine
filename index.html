@@ -4,10 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Be My Valentine 💖</title>
-
   <style>
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       height: 100vh;
@@ -17,7 +15,6 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     }
-
     .card {
       background: #fff;
       padding: 40px 30px;
@@ -26,81 +23,81 @@
       width: 90%;
       max-width: 420px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-
     h1 {
-      color: #e11d48;
       margin-bottom: 30px;
+      color: #e11d48;
     }
-
     .buttons {
       position: relative;
       height: 120px;
     }
-
     button {
       padding: 12px 28px;
       font-size: 16px;
       border: none;
       border-radius: 999px;
       cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
-
+    button:active { transform: scale(0.96); }
     #yesBtn {
       background: #22c55e;
-      color: white;
+      color: #fff;
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
     }
-
+    #yesBtn:hover { box-shadow: 0 14px 28px rgba(34,197,94,0.55); }
     #noBtn {
       position: absolute;
       background: #ef4444;
-      color: white;
+      color: #fff;
       left: 55%;
       top: 10px;
       box-shadow: 0 10px 20px rgba(239,68,68,0.4);
     }
-
     .result {
       display: none;
       animation: pop 0.5s ease forwards;
     }
-
     @keyframes pop {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-
     .heart {
       font-size: 48px;
+      margin-bottom: 10px;
       animation: pulse 1.2s infinite;
     }
-
     @keyframes pulse {
+      0%, 100% { transform: scale(1); }
       50% { transform: scale(1.15); }
     }
-
+    /* Polaroid photo style */
     .polaroid {
-      background: white;
+      background: #fff;
       padding: 12px 12px 28px;
       width: 240px;
-      margin: 15px auto;
+      margin: 10px auto 15px;
       border-radius: 6px;
       box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+      animation: photoIn 0.8s ease forwards;
     }
-
     .polaroid img {
       width: 100%;
       border-radius: 4px;
     }
+    @keyframes photoIn {
+      from { transform: translateY(20px) rotate(-3deg); opacity: 0; }
+      to { transform: translateY(0) rotate(-2deg); opacity: 1; }
+    }
   </style>
 </head>
-
 <body>
-  <div class="card">
+  <div class="card" id="card">
     <div id="question">
       <h1>Will you be my Valentine? 💕</h1>
-
       <div class="buttons" id="buttonsArea">
         <button id="yesBtn">Yes</button>
         <button id="noBtn">No</button>
@@ -109,50 +106,48 @@
 
     <div class="result" id="result">
       <div class="heart">❤️</div>
-
-      <div class="polaroid">
-        <img
-          src="https://raw.githubusercontent.com/ashwindeena127/Be-my-valentine/main/personal_us.jpeg"
-          alt="Us together"
-        />
-      </div>
-
-      <img
-        src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif"
-        alt="Love gif"
-        style="width:180px;border-radius:12px;margin:10px auto;display:block;"
-      />
-
+      
+      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ3b2J6cXg4eWJ5YjZkN3J1a2N1b3Z2N2x5d3F4cXQ3c3M5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Romantic funny love gif" style="width: 180px; margin: 15px auto; display: block; border-radius: 12px;" />
       <h1>Best decision ever!</h1>
-      <p style="font-size:20px;">I love you Buchu 💖</p>
+      <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWZ3b2J6cXg4eWJ5YjZkN3J1a2N1b3Z2N2x5d3F4cXQ3c3M5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Romantic funny love gif" style="width: 180px; margin: 15px auto; display: block; border-radius: 12px;" />
+      <p style="font-size: 20px; margin-top: 10px;">I love you Buchu 💖</p>
+      <div class="polaroid">
+        <img src="https://raw.githubusercontent.com/USERNAME/REPO/main/personal_us.jpeg" alt="Us together" />
+      </div>
+    </div>
     </div>
   </div>
 
   <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const buttonsArea = document.getElementById("buttonsArea");
-    const question = document.getElementById("question");
-    const result = document.getElementById("result");
+    const noBtn = document.getElementById('noBtn');
+    const buttonsArea = document.getElementById('buttonsArea');
+    const yesBtn = document.getElementById('yesBtn');
+    const question = document.getElementById('question');
+    const result = document.getElementById('result');
 
     function moveNoButton() {
-      const area = buttonsArea.getBoundingClientRect();
-      const btn = noBtn.getBoundingClientRect();
+      const areaRect = buttonsArea.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
 
-      const x = Math.random() * (area.width - btn.width);
-      const y = Math.random() * (area.height - btn.height);
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.left = randomX + 'px';
+      noBtn.style.top = randomY + 'px';
     }
 
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("mousemove", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+    // Make NO button impossible to click 😄
+    // Make NO button impossible to click 😄
+    noBtn.addEventListener('mouseenter', moveNoButton);
+    noBtn.addEventListener('mousemove', moveNoButton);
+    noBtn.addEventListener('touchstart', moveNoButton);
 
-    yesBtn.addEventListener("click", () => {
-      question.style.display = "none";
-      result.style.display = "block";
+    yesBtn.addEventListener('click', () => {
+      question.style.display = 'none';
+      result.style.display = 'block';
     });
   </script>
 </body>
